@@ -10,7 +10,7 @@ pub struct Keyring<'a> {
 // Eventually try to get collection into the Keyring struct?
 impl<'a> Keyring<'a> {
     pub fn new(service: &'a str, username: &'a str) -> Keyring<'a> {
-        let attributes = vec![("service", service), ("username", username)];
+        let attributes = vec![("application", service), ("service", service), ("username", username)];
         Keyring {
             attributes,
             service,
@@ -24,12 +24,10 @@ impl<'a> Keyring<'a> {
         if collection.is_locked()? {
             collection.unlock()?;
         }
-        let mut attrs = self.attributes.clone();
-        attrs.push(("application", "rust-keyring"));
         let label = &format!("Password for {} on {}", self.username, self.service)[..];
         collection.create_item(
             label,
-            attrs,
+            self.attributes.clone(),
             password.as_bytes(),
             true, // replace
             "text/plain",
