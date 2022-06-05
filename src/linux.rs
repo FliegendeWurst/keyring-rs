@@ -47,6 +47,9 @@ pub fn get_password(map: &mut PlatformCredential) -> Result<String> {
             .search_items(map.attributes())
             .map_err(decode_error)?;
         let item = search.get(0).ok_or(ErrorCode::NoEntry)?;
+        if item.is_locked().map_err(decode_error)? {
+            item.unlock().map_err(decode_error)?;
+        }
         let bytes = item.get_secret().map_err(decode_error)?;
         // Linux keyring allows non-UTF8 values, but this library only supports adding UTF8 items
         // to the keyring, so this should only fail if we are trying to retrieve a non-UTF8
