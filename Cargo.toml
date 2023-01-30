@@ -17,7 +17,7 @@ security-framework = "2.6"
 security-framework = "2.6"
 
 [target.'cfg(target_os = "linux")'.dependencies]
-secret-service = "2.0"
+secret-service = "3.0"
 
 [target.'cfg(target_os = "windows")'.dependencies]
 byteorder = "1.2"
